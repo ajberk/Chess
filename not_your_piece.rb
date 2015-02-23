@@ -3,3 +3,6 @@ end
 
 class NotAPieceError < ArgumentError
 end
+
+class InvalidMoveError < ArgumentError
+end
