@@ -23,12 +23,12 @@ class Board
       piece.pos = to_pos
       piece.moved = true if piece.is_a?(Pawn)
     else #Exception later
-      begin
-        raise InvalidMoveError.new("Not a valid move")
-      rescue InvalidMoveError => g
-        puts g.message
-        retry
-      end
+      # begin
+      #   raise InvalidMoveError.new("Not a valid move")
+      # rescue InvalidMoveError => g
+      #   puts g.message
+      #   retry
+      # end
     end
   end
 
@@ -58,7 +58,6 @@ class Board
       raise "Look at me!" if piece.is_a?(Fixnum)
       possible_board[piece.pos] = piece.class.new(possible_board, piece.pos, piece.color)
     end
-
     possible_board
   end
 
@@ -92,7 +91,6 @@ class Board
     when 'f'
       @cursor
     end
-
   end
 
   def render

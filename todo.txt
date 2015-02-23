@@ -1,2 +1,4 @@
 Refactor a whole bunch of this code.
-Make it so valid moves is in the form of the chessboard
+Make it so valid moves is in the form of the chessboard.
+
+Right now if player makes in valid move, it will skip his turn.
