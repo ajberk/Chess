@@ -17,19 +17,10 @@ class Board
   def move_piece!(from_pos, to_pos) # used to actually move piece
     piece = self[from_pos]
     p "#{piece.valid_moves} are the valid moves for #{piece}"
-    if piece.valid_moves.include?(to_pos)
-      self[to_pos] = piece
-      self[from_pos] = nil
-      piece.pos = to_pos
-      piece.moved = true if piece.is_a?(Pawn)
-    else #Exception later
-      # begin
-      #   raise InvalidMoveError.new("Not a valid move")
-      # rescue InvalidMoveError => g
-      #   puts g.message
-      #   retry
-      # end
-    end
+    self[to_pos] = piece
+    self[from_pos] = nil
+    piece.pos = to_pos
+    piece.moved = true if piece.is_a?(Pawn)
   end
 
   def move(from_pos, to_pos) # only used by valid_moves
@@ -38,10 +29,6 @@ class Board
     self[from_pos] = nil
     piece.pos = to_pos
   end
-  # def all_pieces_valid_moves(color)
-  #   valid_moves
-  # end
-  #
 
   def all_moves(piece)
     piece.moves
@@ -93,41 +80,23 @@ class Board
     end
   end
 
+  def colorize(square, i, j)
+    square.nil? ? object_to_colorize = '  ' : object_to_colorize = square.inspect
+    if [i, j] == @cursor
+      object_to_colorize.colorize(:background => :yellow)
+    elsif (i + j).odd?
+      object_to_colorize.colorize(:background => :light_gray)
+    else
+      object_to_colorize.colorize(:background => :blue)
+    end
+  end
+
   def render
-    # puts
     system("clear")
     num = 8
     "  A B C D E F G H\n" + chess_board.map.with_index do |row, i|
       rend = [row.map.with_index do |square, j|
-        if square
-          if (i + j).odd?
-            if [i, j] == @cursor
-              square.inspect.colorize(:background => :yellow)
-            else
-              square.inspect.colorize(:background => :light_gray)
-            end
-           else
-             if [i, j] == @cursor
-               square.inspect.colorize(:background => :yellow)
-             else
-               square.inspect.colorize(:background => :blue)
-             end
-          end
-        else
-          if (i + j).odd?
-            if [i, j] == @cursor
-              '  '.colorize(:background => :yellow)
-            else
-              '  '.colorize(:background => :light_gray)
-            end
-          else
-            if [i, j] == @cursor
-              '  '.colorize(:background => :yellow)
-            else
-              '  '.colorize(:background => :blue)
-            end
-          end
-        end
+        colorize(square, i, j)
       end.join("")].map { |elem| "#{num} #{elem}"}
       num -= 1
       rend

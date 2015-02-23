@@ -85,7 +85,9 @@ class Game
       puts "Valid moves are: #{piece.valid_moves}"
       puts "Where do you want to move it?"
       to_pos = get_to_pos(input)
-      raise InvalidMoveError.new("Not a valid move! Please pick a valid move.") unless piece.valid_moves.include?(to_pos)
+      unless piece.valid_moves.include?(to_pos)
+        raise InvalidMoveError.new("Not a valid move! Please pick a valid move.")
+      end
     rescue InvalidMoveError => g
       puts g.message
       retry
