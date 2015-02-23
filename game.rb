@@ -60,7 +60,7 @@ class Game
     piece = grid[from_pos]
   end
 
-  def piece_moving
+  def get_piece_to_move
     begin
       input = nil
       from_pos = get_from_pos(input)
@@ -76,7 +76,10 @@ class Game
       puts f.message
       retry
     end
+    from_pos
+  end
 
+  def get_place_to_move_piece(piece)
     begin
       input = nil
       puts "Valid moves are: #{piece.valid_moves}"
@@ -87,6 +90,13 @@ class Game
       puts g.message
       retry
     end
+    to_pos
+  end
+
+  def piece_moving
+    from_pos = get_piece_to_move
+    piece = get_piece(from_pos)
+    to_pos = get_place_to_move_piece(piece)
     grid.move_piece!(from_pos, to_pos)
   end
 
