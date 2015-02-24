@@ -124,8 +124,8 @@ class Game
     p "it is #{@current_player}'s turn!'"
   end
 end
+
 system("clear")
 g = Game.new
 g.play
-
 system("clear")
