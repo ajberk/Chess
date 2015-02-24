@@ -1,2 +1,0 @@
-Refactor how errors are raised, as it is not dry right now.
-Make it so valid moves is in the form of the chessboard.

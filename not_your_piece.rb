@@ -6,3 +6,6 @@ end
 
 class InvalidMoveError < ArgumentError
 end
+
+class NoMovesAvailableError < ArgumentError
+end

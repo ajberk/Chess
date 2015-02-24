@@ -66,13 +66,13 @@ class Board
   def cursor_position(input_letter)
     case input_letter
     when 'w'
-      @cursor[0] -= 1
+      @cursor[0] -= 1 if @cursor[0] > 0
     when 's'
-      @cursor[0] += 1
+      @cursor[0] += 1 if @cursor[0] < 7
     when 'a'
-      @cursor[1] -= 1
+      @cursor[1] -= 1 if @cursor[1] > 0
     when 'd'
-      @cursor[1] += 1
+      @cursor[1] += 1 if @cursor[1] < 7
     when 't'
       @cursor
     when 'f'

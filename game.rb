@@ -53,12 +53,17 @@ class Game
       piece = get_piece(from_pos)
       raise NotAPieceError.new("That's not a piece!") if piece.nil?
       raise NotYourPieceError.new("That's not your piece!") if piece.color != current_player
+      raise NoMovesAvailableError.new("No moves available for that piece!") if piece.valid_moves.empty?
     rescue NotYourPieceError => e
       puts e.message
       input = ""
       retry
     rescue NotAPieceError => f
       puts f.message
+      input = ""
+      retry
+    rescue NoMovesAvailableError => h
+      puts h.message
       input = ""
       retry
     end
@@ -78,6 +83,7 @@ class Game
   def get_piece(from_pos)
     piece = grid[from_pos]
   end
+  
 
   def get_piece_to_move
     begin
@@ -87,11 +93,15 @@ class Game
       print
       raise NotAPieceError.new("That's not a piece!") if piece.nil?
       raise NotYourPieceError.new("That's not your piece!") if piece.color != current_player
+      raise NoMovesAvailableError.new("No moves available for that piece!") if piece.valid_moves.empty?
     rescue NotYourPieceError => e
       puts e.message
       retry
     rescue NotAPieceError => f
       puts f.message
+      retry
+    rescue NoMovesAvailableError => h
+      puts h.message
       retry
     end
     from_pos
