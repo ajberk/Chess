@@ -51,9 +51,7 @@ class Game
       end
       from_pos = grid.cursor.dup
       piece = get_piece(from_pos)
-      raise NotAPieceError.new("That's not a piece!") if piece.nil?
-      raise NotYourPieceError.new("That's not your piece!") if piece.color != current_player
-      raise NoMovesAvailableError.new("No moves available for that piece!") if piece.valid_moves.empty?
+      raise_errors(piece)
     rescue NotYourPieceError => e
       puts e.message
       input = ""
@@ -83,7 +81,12 @@ class Game
   def get_piece(from_pos)
     piece = grid[from_pos]
   end
-  
+
+  def raise_errors(piece)
+    raise NotAPieceError.new("That's not a piece!") if piece.nil?
+    raise NotYourPieceError.new("That's not your piece!") if piece.color != current_player
+    raise NoMovesAvailableError.new("No moves available for that piece!") if piece.valid_moves.empty?
+  end
 
   def get_piece_to_move
     begin
@@ -91,9 +94,7 @@ class Game
       from_pos = get_from_pos(input)
       piece = get_piece(from_pos)
       print
-      raise NotAPieceError.new("That's not a piece!") if piece.nil?
-      raise NotYourPieceError.new("That's not your piece!") if piece.color != current_player
-      raise NoMovesAvailableError.new("No moves available for that piece!") if piece.valid_moves.empty?
+      raise_errors(piece)
     rescue NotYourPieceError => e
       puts e.message
       retry
