@@ -21,13 +21,7 @@ class Piece
     chess_board.add_piece(pos, self)
   end
 
-  # def moves(type_of_piece)
-  #   raise "SHAWNA WAS WRONG"
-  #   dirs = type_of_piece.move_dirs
-  # end
-
   def valid_moves
-    # all_possible_moves = all_moves(piece)
     true_valid_moves = []
     current_position = self.pos
     moves.each do |possible_move|
@@ -37,5 +31,17 @@ class Piece
     end
 
     true_valid_moves
+  end
+
+  def print_valid_moves
+    nums = (0..7).to_a
+    nums_rev = (0..7).to_a.reverse.map{|el| el + 1}
+    lets =  ("A".."H").to_a
+    lets_hash = nums.zip(lets).to_h
+    nums_hash = nums.zip(nums_rev).to_h
+    new_form_valid_moves = valid_moves.map do |move|
+      [lets_hash[move[1]], nums_hash[move[0]]]
+    end
+    new_form_valid_moves
   end
 end

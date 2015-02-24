@@ -77,6 +77,8 @@ class Board
       @cursor
     when 'f'
       @cursor
+    when 'x'
+      exit
     end
   end
 
@@ -91,16 +93,22 @@ class Board
     end
   end
 
-  def render
+  def render(current_player)
     system("clear")
     num = 8
-    "  A B C D E F G H\n" + chess_board.map.with_index do |row, i|
-      rend = [row.map.with_index do |square, j|
+    "  Welcome to Chess" +
+    "\n\n WASD To move cursor, \n F to select piece to move, \n T to place it" +
+    "\n X to exit" +
+    "\n\n  A B C D E F G H\n" + chess_board.map.with_index do |row, i|
+      rend = row.map.with_index do |square, j|
         colorize(square, i, j)
-      end.join("")].map { |elem| "#{num} #{elem}"}
+      end
+      rend = rend.join("")
+      rend = [] << rend
+      rend = rend.map { |elem| "#{num} #{elem}"}
       num -= 1
       rend
-    end.join("\n")
+    end.join("\n") + "\n\nIts #{current_player}'s turn to move"
   end
 
   def in_check?(color)

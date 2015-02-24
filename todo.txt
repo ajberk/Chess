@@ -1,4 +1,2 @@
-Refactor a whole bunch of this code.
+Refactor how errors are raised, as it is not dry right now.
 Make it so valid moves is in the form of the chessboard.
-
-Right now if player makes in valid move, it will skip his turn.

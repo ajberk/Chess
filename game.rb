@@ -21,7 +21,6 @@ class Game
   end
 
   def play
-    puts "Welcome to Chess!"
     until game_over?
       update_players
       piece_moving
@@ -32,26 +31,46 @@ class Game
   end
 
   def update_players
-    puts
-    puts "It's #{current_player}'s turn to move"
-    puts
-    puts grid.render
+    puts grid.render(@current_player)
   end
+
+  def fancy_render(piece)
+    grid.render(@current_player) +
+    "\nPiece is #{piece.inspect}" +
+    "\nValid moves are: #{piece.print_valid_moves}" +
+    "\nWhere do you want to move it?"
+  end
+
 
   def get_from_pos(input)
-    until input == 'f'
-      input = STDIN.getch
-      grid.cursor_position(input)
-      puts grid.render
+    begin
+      until input == 'f'
+        input = STDIN.getch
+        grid.cursor_position(input)
+        puts grid.render(@current_player)
+      end
+      from_pos = grid.cursor.dup
+      piece = get_piece(from_pos)
+      raise NotAPieceError.new("That's not a piece!") if piece.nil?
+      raise NotYourPieceError.new("That's not your piece!") if piece.color != current_player
+    rescue NotYourPieceError => e
+      puts e.message
+      input = ""
+      retry
+    rescue NotAPieceError => f
+      puts f.message
+      input = ""
+      retry
     end
-    from_pos = grid.cursor.dup
+    puts fancy_render(piece)
+    from_pos
   end
 
-  def get_to_pos(input)
+  def get_to_pos(input, piece)
     until input == 't'
       input = STDIN.getch
       grid.cursor_position(input)
-      puts grid.render
+      puts fancy_render(piece)
     end
     to_pos = grid.cursor.dup
   end
@@ -65,8 +84,7 @@ class Game
       input = nil
       from_pos = get_from_pos(input)
       piece = get_piece(from_pos)
-      puts "Testing cursor selection"
-      print "Piece is "; p piece
+      print
       raise NotAPieceError.new("That's not a piece!") if piece.nil?
       raise NotYourPieceError.new("That's not your piece!") if piece.color != current_player
     rescue NotYourPieceError => e
@@ -82,9 +100,7 @@ class Game
   def get_place_to_move_piece(piece)
     begin
       input = nil
-      puts "Valid moves are: #{piece.valid_moves}"
-      puts "Where do you want to move it?"
-      to_pos = get_to_pos(input)
+      to_pos = get_to_pos(input, piece)
       unless piece.valid_moves.include?(to_pos)
         raise InvalidMoveError.new("Not a valid move! Please pick a valid move.")
       end
@@ -105,6 +121,7 @@ class Game
   def take_turn
     turns = Hash["white", "black", "black", "white"]
     @current_player = turns[current_player]
+    p "it is #{@current_player}'s turn!'"
   end
 end
 system("clear")
