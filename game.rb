@@ -134,6 +134,7 @@ class Game
     @current_player = turns[current_player]
     p "it is #{@current_player}'s turn!'"
   end
+  
 end
 
 system("clear")
